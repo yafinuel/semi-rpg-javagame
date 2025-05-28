@@ -4,4 +4,5 @@ package entities;
 public class Player {
     private int health;
     private int power;
+
 }
