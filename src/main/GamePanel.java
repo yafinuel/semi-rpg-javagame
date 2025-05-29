@@ -2,7 +2,8 @@ package main;
 
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
-
+import javax.imageio.ImageIO;
+import java.io.InputStream;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,6 +15,7 @@ import static utils.Constants.Direction.*;
 public class GamePanel extends JPanel {
 
     private MouseInputs mouseInputs;
+    private float xDelta = 100, yDelta = 100;
     private BufferedImage img;
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 15; // FPS
@@ -25,6 +27,8 @@ public class GamePanel extends JPanel {
     public GamePanel() {
 
         mouseInputs = new MouseInputs(this);
+        importImg();
+        setPanelSize();
         loadAnimations();
         addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
@@ -33,7 +37,7 @@ public class GamePanel extends JPanel {
     }
 
     private void loadAnimations() {
-        animations = new bufferedImage[9][6] // Ini adalah array foto
+        animations = new BufferedImage[9][6]; // Ini adalah array foto
 
         for(int j = 0; j < animations.length; j++)
             for(int i = 0; i < animations.length; i++)
@@ -41,10 +45,10 @@ public class GamePanel extends JPanel {
     }
 
     private void importImg() {
-        InputStream is = getClass().getResourceAsStream("");
+        InputStream is = getClass().getResourceAsStream("/SpriteSheet.png");
 
         try {
-            img = imageIO.read(is);
+            img = ImageIO.read(is);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -56,13 +60,17 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public void setDirection(int direction) {
+    private void setPanelSize() {
+        Dimension size = new Dimension(1280,800);
+        setPreferredSize(size);
+    }
+    public void setDirection (int direction) {
         this.playerDir = direction;
         moving = true;
     }
 
     public void setMoving(boolean moving) {
-        this.moving = moving
+        this.moving = moving;
     }
 
     private void updateAnimationTick(){
@@ -71,7 +79,7 @@ public class GamePanel extends JPanel {
         if(aniTick >= aniSpeed){
             aniTick = 0;
             aniIndex++;
-            if(aniIndex >= GetSpriteAmount(int player_action))
+            if(aniIndex >= GetSpriteAmount(playerAction))
                 aniIndex = 0; // Untuk index foto
         }
 
