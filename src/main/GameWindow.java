@@ -2,13 +2,12 @@ package main;
 
 import javax.swing.*;
 
-public class GameWindow {
+public class GameWindow extends JFrame {
     private JFrame jframe;
 
+//    Membuat window
     public GameWindow(GamePanel gamePanel) {
-
         jframe = new JFrame();
-
 
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.add(gamePanel);

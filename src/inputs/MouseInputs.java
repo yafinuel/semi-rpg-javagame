@@ -13,9 +13,13 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         this.gamePanel = gamePanel;
     }
 
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-
     }
 
     @Override
@@ -40,11 +44,5 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-//        Dihapus
     }
 }
