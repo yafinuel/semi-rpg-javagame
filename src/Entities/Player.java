@@ -1,5 +1,7 @@
 package Entities;
 
+import utilz.LoadSave;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,13 +15,13 @@ import static utilz.Constants.PlayerConstants.*;
 public class Player extends Entity{
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
-    private boolean moving = false;
+    private boolean moving, jumping = false;
     private boolean left,up,right,down;
     private float playerSpeed = 2.0f;
 
     private BufferedImage[][] animations;
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimations();
     }
 
@@ -33,7 +35,7 @@ public class Player extends Entity{
 
     public void render(Graphics g){
 
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 64, 64, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
 
     }
 
@@ -45,17 +47,35 @@ public class Player extends Entity{
             aniIndex++;
             if(aniIndex >= GetSpriteAmount(playerAction)){
                 aniIndex = 0;
+                jumping = false;
             }
         }
     }
 
     private void setAnimation() {
+
+        int startAni = playerAction;
+
         if (moving) {
-            playerAction = SIDE_WALK;
+            playerAction = SIDE_WALK_NO_WEAPON;
         } else {
-            playerAction = IDLE;
+            playerAction = IDLE_NO_WEAPON;
+        }
+
+        if (jumping) {
+            playerAction = JUMP;
+        }
+
+        if(startAni != playerAction){
+            resetAniTick();
         }
     }
+
+    private void resetAniTick() {
+        aniTick= 0;
+        aniIndex= 0;
+    }
+
     private void updatePos() {
 
         moving = false;
@@ -78,23 +98,12 @@ public class Player extends Entity{
     }
 
     private void loadAnimations() {
-        try (InputStream is = getClass().getResourceAsStream("/sprites.png")) {
-            if (is != null) {
-                BufferedImage img = ImageIO.read(is);
+            BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-                animations = new BufferedImage[8][8];
-                for (int j = 0; j < animations.length; j++)
-                    for (int i = 0; i < animations[j].length; i++)
-                        animations[j][i] = img.getSubimage(i * 32, j * 32, 32, 32);
-
-            } else {
-                System.err.println("File gambar tidak ditemukan!");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+            animations = new BufferedImage[10][8];
+            for (int j = 0; j < animations.length; j++)
+                for (int i = 0; i < animations[j].length; i++)
+                    animations[j][i] = img.getSubimage(i * 24, j * 26, 24, 26);
     }
 
     public void resetDirBooleans(){
@@ -102,6 +111,10 @@ public class Player extends Entity{
         right = false;
         up = false;
         down = false;
+    }
+
+    public void setJumping(boolean jumping){
+        this.jumping = jumping;
     }
 
     public boolean isDown() {

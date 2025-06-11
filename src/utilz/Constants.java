@@ -10,26 +10,34 @@ public class Constants {
     }
 
     public static class PlayerConstants{
-        public static final int IDLE = 0;
-        public static final int SIDE_WALK_NO_WEAPON = 1;
-        public static final int FRONT_WALK = 2;
-        public static final int FRONT_WALK_NO_WEAPON = 3;
-        public static final int BACK_WALK = 4;
-        public static final int BACK_WALK_NO_WEAPON = 5;
-        public static final int SIDE_WALK = 6;
+        public static final int IDLE_NO_WEAPON = 0;
+        public static final int IDLE = 1;
+        public static final int SIDE_WALK_NO_WEAPON = 2;
+        public static final int SIDE_WALK = 3;
+        public static final int BACK_WALK_NO_WEAPON = 4;
+        public static final int BACK_WALK = 5;
+        public static final int FRONT_WALK = 6;
+        public static final int FRONT_WALK_NO_WEAPON = 7;
+        public static final int JUMP = 8;
+        public static final int HIT = 9;
 
         public static int GetSpriteAmount(int player_action){
             switch (player_action) {
-                    case IDLE:
-                    case SIDE_WALK_NO_WEAPON:
-                    case FRONT_WALK:
-                    case FRONT_WALK_NO_WEAPON:
-                    case BACK_WALK:
-                    case BACK_WALK_NO_WEAPON:
-                    case SIDE_WALK:
-                        return 8;
-                    default:
-                        return 0;
+                case HIT:
+                    return 4;
+                case IDLE_NO_WEAPON:
+                case IDLE:
+                case JUMP:
+                    return 7;
+                case SIDE_WALK_NO_WEAPON:
+                case FRONT_WALK:
+                case FRONT_WALK_NO_WEAPON:
+                case BACK_WALK:
+                case BACK_WALK_NO_WEAPON:
+                case SIDE_WALK:
+                    return 8;
+                default:
+                    return 0;
             }
         }
 
