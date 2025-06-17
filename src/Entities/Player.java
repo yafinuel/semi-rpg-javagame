@@ -21,14 +21,14 @@ import static utilz.Constants.*;
 public class Player extends Entity{
     private BufferedImage[][] animations;
 
-    private boolean moving, jumping = false;
+    private boolean moving, attacking = false;
     private boolean left,right,jump;
 
     private int [][] lvlData;
-    private float xDrawOffset = 1 * Game.SCALE;
-    private float yDrawOffset = 4 * Game.SCALE;
+    private float xDrawOffset = 50 * Game.SCALE;
+    private float yDrawOffset = 22 * Game.SCALE;
 
-//    Jumping / Gravity
+//    attacking / Gravity
     private float jumpSpeed = -2.25f * Game.SCALE;
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
 
@@ -55,6 +55,8 @@ public class Player extends Entity{
 
     private boolean attackChecked;
     private Playing playing;
+
+    private int tileY = 0;
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
@@ -92,11 +94,17 @@ public class Player extends Entity{
         updatePos();
         if(moving)
             checkPotionTouched();
-        if(jumping)
+            checkSpikesTouched();
+            tileY = (int)hitbox.y / Game.TILES_SIZE;
+        if(attacking)
             checkAttack();
         updateAnimationTick();
         setAnimation();
 
+    }
+
+    private void checkSpikesTouched() {
+        playing.checkSpikesTouched(this);
     }
 
     private void checkPotionTouched() {
@@ -146,7 +154,7 @@ public class Player extends Entity{
             aniIndex++;
             if(aniIndex >= GetSpriteAmount(state)){
                 aniIndex = 0;
-                jumping = false;
+                attacking = false;
                 attackChecked = false;
             }
         }
@@ -157,7 +165,7 @@ public class Player extends Entity{
         int startAni = state;
 
         if (moving)
-            state = SIDE_WALK;
+            state = RUNNING;
         else
             state = IDLE;
 
@@ -168,18 +176,15 @@ public class Player extends Entity{
                 state = IDLE;
         }
 
-        if (jumping) {
-            state = JUMP;
-        }
 
-//        if(attacking){
-//            state = ATTACK;
-//            if(startAni != ATTACK){
-//                aniIndex = 1;
-//                aniTick = 0;
-//                return;
-//            }
-//        }
+        if(attacking){
+            state = ATTACK;
+            if(startAni != ATTACK){
+                aniIndex = 1;
+                aniTick = 0;
+                return;
+            }
+        }
 
         if(startAni != state){
             resetAniTick();
@@ -270,6 +275,10 @@ public class Player extends Entity{
             currentHealth = maxHealth;
     }
 
+    public void kill() {
+        currentHealth = 0;
+    }
+
     public void changePower(int value){
         System.out.println("Added Power");
     }
@@ -277,10 +286,10 @@ public class Player extends Entity{
     private void loadAnimations() {
             BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-            animations = new BufferedImage[10][8];
+            animations = new BufferedImage[7][10];
             for (int j = 0; j < animations.length; j++)
                 for (int i = 0; i < animations[j].length; i++)
-                    animations[j][i] = img.getSubimage(i * 24, j * 26, 24, 26);
+                    animations[j][i] = img.getSubimage(i * 128, j * 64, 128, 64);
 
         statusBarImg = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
     }
@@ -296,8 +305,8 @@ public class Player extends Entity{
         right = false;
     }
 
-    public void setJumping(boolean jumping){
-        this.jumping = jumping;
+    public void setattacking(boolean attacking){
+        this.attacking = attacking;
     }
 
     public boolean isRight() {
@@ -323,7 +332,7 @@ public class Player extends Entity{
         resetDirBooleans();
         inAir = false;
 //        attacking = false;
-        jumping = false;
+        attacking = false;
         moving = false;
         state = IDLE;
         currentHealth = maxHealth;
@@ -334,4 +343,10 @@ public class Player extends Entity{
         if (!IsEntityOnFloor(hitbox, lvlData))
             inAir = true;
     }
+
+    public int getTileY(){
+        return tileY;
+    }
+
+
 }

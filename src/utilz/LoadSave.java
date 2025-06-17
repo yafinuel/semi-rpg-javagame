@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import static utilz.Constants.EnemyConstants.CRABBY;
 
 public class LoadSave {
-    public static final String PLAYER_ATLAS = "knight.png";
+    public static final String PLAYER_ATLAS = "knight_finale.png";
     public static final String LEVEL_ATLAS = "outside_sprites.png";
 
 //    public static final String LEVEL_ONE_DATA = "level_one_data.png";
@@ -35,6 +35,9 @@ public class LoadSave {
 
     public static final String POTION_ATLAS = "potions_sprites.png";
     public static final String CONTAINER_ATLAS = "objects_sprites.png";
+    public static final String TRAP_ATLAS = "trap_atlas.png";
+    public static final String CANNON_ATLAS = "cannon_atlas.png";
+    public static final String CANNON_BALL = "ball.png";
 
     public static BufferedImage GetSpriteAtlas(String filename){
         BufferedImage img = null;
