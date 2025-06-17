@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Array;
 import java.util.ArrayList;
 import static utilz.Constants.EnemyConstants.CRABBY;
 
@@ -29,6 +28,7 @@ public class LoadSave {
     public static final String BIG_CLOUDS = "big_clouds.png";
     public static final String SMALL_CLOUDS = "small_clouds.png";
     public static final String CRABBY_SPRITE = "crabby_sprite.png";
+    public static final String STATUS_BAR = "health_power_bar.png";
 
     public static BufferedImage GetSpriteAtlas(String filename){
         BufferedImage img = null;

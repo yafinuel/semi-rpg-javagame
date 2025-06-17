@@ -9,3 +9,6 @@ w x h = 68 x 30
 ===============
 knight_3attack.png
 w x h = 68 x 24
+===============
+knight_2.png
+w x h = 48 x 32
